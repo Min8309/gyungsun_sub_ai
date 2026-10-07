@@ -3,7 +3,7 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import { analyze, providerRequest, validateArticle, validateAnalysis } from './pipeline.mjs';
+import { analyze, generateHeaderImages, providerRequest, validateArticle, validateAnalysis } from './pipeline.mjs';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const dataRoot = path.join(root, '.newsroom.local');
 await fs.mkdir(dataRoot, { recursive: true, mode: 0o700 });
@@ -30,15 +30,32 @@ http.createServer(async (req, res) => {
       const articles = await Promise.all(files.map(name => load(name.slice(0, -5))));
       return json(res, 200, articles.sort((a,b) => b.createdAt.localeCompare(a.createdAt)));
     }
-    const match = url.pathname.match(/^\/api\/articles\/([a-f0-9-]{36})(?:\/(speech|publish|audio))?$/);
+    const match = url.pathname.match(/^\/api\/articles\/([a-f0-9-]{36})(?:\/(speech|publish|audio|images|header-[01]))?$/);
     if (req.method === 'POST' && url.pathname === '/api/articles') {
       const input = await body(req); const source = validateArticle(input);
       const analysis = await analyze(source, input.apiKey);
-      const article = { ...source, ...analysis, id: randomUUID(), status: 'draft', createdAt: new Date().toISOString(), audio: null };
+      const article = { ...source, ...analysis, id: randomUUID(), status: 'draft', createdAt: new Date().toISOString(), audio: null, headerImages: [] };
       await save(article); return json(res, 201, article);
     }
     if (!match) return json(res, 404, { error: '기사를 찾을 수 없습니다.' });
     const [, id, action] = match; const article = await load(id);
+    if (req.method === 'GET' && action?.startsWith('header-')) {
+      const file = article.headerImages?.[Number(action.slice(-1))];
+      if (!file) return json(res, 404, { error: '생성된 헤더 이미지가 없습니다.' });
+      const bytes = await fs.readFile(path.join(dataRoot, file));
+      res.writeHead(200, { 'Content-Type': 'image/png', 'Cache-Control': 'no-store' }); return res.end(bytes);
+    }
+    if (req.method === 'POST' && action === 'images') {
+      if (article.status === 'published') throw new Error('발행한 기사입니다.');
+      const input = await body(req);
+      const images = await generateHeaderImages(article, input.apiKey);
+      const files = images.map(() => `${id}-${randomUUID()}.png`);
+      try {
+        for (let i = 0; i < images.length; i++) await fs.writeFile(path.join(dataRoot, files[i]), images[i], { mode: 0o600 });
+        article.headerImages = files; await save(article);
+      } catch (error) { await Promise.all(files.map(file => fs.rm(path.join(dataRoot, file), { force: true }))); throw error; }
+      return json(res, 200, article);
+    }
     if (req.method === 'GET' && action === 'audio') {
       if (!article.audio) return json(res, 404, { error: '생성된 음성이 없습니다.' });
       const bytes = await fs.readFile(path.join(dataRoot, article.audio));
@@ -49,6 +66,7 @@ http.createServer(async (req, res) => {
       const input = await body(req); const fields = { ...validateArticle(input), ...validateAnalysis(input) };
       if (article.status === 'published') throw new Error('발행한 기사는 이 버전에서 수정할 수 없습니다.');
       if (fields.script !== article.script) article.audio = null;
+      if (['title', 'body', 'summary', 'modernText'].some(key => fields[key] !== article[key]) || JSON.stringify(fields.places) !== JSON.stringify(article.places)) article.headerImages = [];
       Object.assign(article, fields); await save(article); return json(res, 200, article);
     }
     if (req.method === 'POST' && action === 'speech') {
@@ -60,6 +78,7 @@ http.createServer(async (req, res) => {
       article.audio = file; await save(article); return json(res, 200, article);
     }
     if (req.method === 'POST' && action === 'publish') {
+      if (article.headerImages && article.headerImages.length !== 2) throw new Error('기사 내용에 맞는 헤더 이미지 2장을 생성한 후 발행해 주세요.');
       if (!article.audio) throw new Error('음성을 생성한 후 발행해 주세요.');
       article.status = 'published'; await save(article); return json(res, 200, article);
     }
