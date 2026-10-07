@@ -1,16 +1,81 @@
-# React + Vite
+# 경성신문 · 경성야록
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+역사 기사 기록과 라디오 콘텐츠를 제공하는 React/Vite 사이트입니다.
+편집국에서 원문을 입력하면 기사 분석, 카드, 라디오 대본, 헤더 삽화 2장,
+한국어 음성을 생성하고 검토 후 상세페이지로 발행할 수 있습니다.
 
-Currently, two official plugins are available:
+## 실행
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Node 24 환경에서 다음 명령을 실행합니다.
 
-## React Compiler
+```sh
+npm ci
+npm run newsroom
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+관리자 서버는 로컬 개발용이며 `127.0.0.1:5174`에서 프런트엔드와 API를 함께 제공합니다.
+`npm run dev`는 기존 프런트엔드만 실행하므로 기사 자동화에는 `npm run newsroom`을 사용하세요.
 
-## Expanding the Oxlint configuration
+| 경로 | 기능 |
+| --- | --- |
+| `/admin` | 기사 입력·생성·편집·음성 생성·검토 후 발행 |
+| `/news` | 발행한 기사 카드 목록 |
+| `/articles/:id` | 원문·분석·대본·음성·헤더 슬라이드 상세페이지 |
+| `/case/jukcheomjeong` 등 | 기존 사건 기록 |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## 기사 생성과 발행
+
+1. 사용 권한이 있는 OpenAI API 키를 입력합니다.
+2. 제목·원문·발행일·신문명을 입력합니다. 출처와 자료 이미지 URL은 선택 사항입니다.
+3. 기사 분석·요약·현대어 풀이·대본을 생성합니다. 기본 옵션으로 헤더 삽화 2장도 생성합니다.
+4. 원문과 불확실한 해석을 검토하고 생성 결과를 편집합니다.
+5. 저장한 대본과 보이스 설정으로 한국어 MP3를 생성합니다.
+6. 이미지와 음성을 미리 확인한 뒤 발행합니다.
+
+모든 결과는 같은 기사 ID로 연결됩니다. 새 기사는 헤더 이미지 2장과 음성이 있어야 발행됩니다.
+생성 실패 시 초안은 남아 재시도할 수 있습니다. 발행된 기사는 현재 버전에서 수정할 수 없습니다.
+대본·보이스 설정을 수정하여 저장하면 기존 음성 연결이 해제됩니다.
+제목·본문·요약·현대어 풀이·장소 수정 후 저장하면 헤더 이미지 연결이 해제됩니다.
+수정 내용으로 이미지 또는 음성을 다시 생성하세요.
+
+## 헤더 삽화
+
+기사의 장소 전경과 다른 시점을 어두운 세피아·목판화·신문 종이 질감으로 생성합니다.
+`gpt-image-1`으로 가로 PNG 2장(1536×1024, low quality)을 생성합니다.
+제목·날짜는 이미지에 넣지 않고 화면에서 겹쳐 표시합니다.
+두 장 모두 성공하면 관리자 미리보기와 상세페이지에 연결하고 첫 이미지를 카드에 사용합니다.
+슬라이드는 6초마다 전환하며 이전/다음과 일시정지를 지원합니다.
+AI 생성 삽화는 기록 사진과 구분하여 표시합니다.
+
+## 보이스 선택
+
+- OpenAI: 기본 보이스 13종을 목록에서 선택하거나 등록된 커스텀 `voice_` ID를 입력합니다.
+  `gpt-4o-mini-tts`를 사용하고 말투·속도·분위기 지시를 편집할 수 있습니다.
+- ElevenLabs: 기존 보이스 ID와 별도 API 키를 입력합니다.
+  `eleven_multilingual_v2`, 안정성 0.65·유사도 0.85 설정을 사용합니다.
+
+기존 사건의 MP3를 관리자에서 미리 듣고 새 음성과 비교할 수 있습니다.
+기존 MP3에는 생성 서비스·보이스 ID가 없어 기본 alloy가 같은 목소리라고 보증하지 않습니다.
+정확히 같은 음색을 사용하려면 원래 보이스 또는 사용 허가를 받은 등록 보이스 ID가 필요합니다.
+보이스 선택과 ID는 초안에서 변경할 수 있으며 설정은 기사에 저장됩니다.
+
+## API 키와 데이터
+
+본인 또는 사용 허락을 받은 타인의 키를 입력하세요. 키 소유자에게 API 요금이 발생합니다.
+키는 화면 메모리에만 보관하고 기사 파일·로그에 저장하지 않으며 새로고침하면 지워집니다.
+분석 모델은 `gpt-4o-mini`입니다. 이미지·음성 모델의 사용 권한과 사용 가능한 결제 한도가 필요합니다.
+필요한 HTTPS 목적지는 `api.openai.com`과 ElevenLabs 사용 시 `api.elevenlabs.io`입니다.
+
+기사 JSON과 생성 PNG/MP3는 Git에서 제외된 `.newsroom.local/`에 저장됩니다.
+이 서버에는 관리자 로그인과 사용자별 접근 제어가 없습니다.
+공개 배포 전 관리자 인증·권한, HTTPS, 영구 저장소 및 백업을 추가해야 합니다.
+
+## 검증
+
+```sh
+npm run test:newsroom
+npm run build
+npm run lint
+```
+
+테스트는 입력 검증·요청 구성·공급자 오류 처리를 확인하며 실제 유료 AI 호출은 실행하지 않습니다.
