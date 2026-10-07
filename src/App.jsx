@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import JukcheomjeongDetailPage from "./pages/JukcheomjeongDetailPage";
 import MariaDetailPage from "./pages/MariaDetailPage";
@@ -10,7 +10,6 @@ import Newsroom, { NewsList, ArticlePage } from "./pages/Newsroom";
 function App() {
   return (
     <BrowserRouter>
-      <nav className="news-entry" aria-label="경성신문 메뉴"><Link to="/news">새 기사</Link><Link to="/admin">기사 관리</Link></nav>
       <Routes>
         <Route path="/admin" element={<Newsroom />} />
         <Route path="/news" element={<NewsList />} />

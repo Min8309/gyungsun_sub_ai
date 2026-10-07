@@ -1,3 +1,4 @@
+import HeaderArticleLinks from './HeaderArticleLinks'
 export default function DetailHeader() {
   return (
     <header className='archive-header'>
@@ -20,6 +21,7 @@ export default function DetailHeader() {
       </div>
 
       <div className='header-icons'>
+          <HeaderArticleLinks />
         <span>⌕</span>
         <span>☰</span>
       </div>

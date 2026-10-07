@@ -1,3 +1,4 @@
+import HeaderArticleLinks from '../components/HeaderArticleLinks'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -254,6 +255,7 @@ export default function BaekbaekgyoDetailPage () {
         </div>
 
         <div className='header-icons'>
+          <HeaderArticleLinks />
           <span>⌕</span>
           <span>☰</span>
         </div>
