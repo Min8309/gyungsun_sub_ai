@@ -6,12 +6,14 @@
   "scripts": {
     "dev": "vite",
     "newsroom": "node server/index.mjs",
-    "test:newsroom": "node --test server/pipeline.test.mjs",
+    "test:newsroom": "node --test server/*.test.mjs",
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview"
   },
   "dependencies": {
+    "exceljs": "^4.4.0",
+    "pdfjs-dist": "^6.4.299",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.4"

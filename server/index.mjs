@@ -4,6 +4,7 @@ import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { analyze, generateHeaderImages, validateArticle, validateAnalysis } from './pipeline.mjs';
+import { extractScannedPdf } from './pdfImport.mjs';
 import { DEFAULT_SPEECH, validateSpeech, synthesize } from './speech.mjs';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const dataRoot = path.join(root, '.newsroom.local');
@@ -16,8 +17,8 @@ const save = async article => {
   await fs.rename(temp, path.join(dataRoot, `${article.id}.json`));
 };
 const json = (res, status, value) => { res.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(value)); };
-const body = async req => {
-  let content = ''; for await (const chunk of req) { content += chunk; if (content.length > 150000) throw new Error('입력 데이터가 너무 큽니다.'); }
+const body = async (req, limit = 150000) => {
+  let content = ''; for await (const chunk of req) { content += chunk; if (content.length > limit) throw new Error('입력 데이터가 너무 큽니다.'); }
   return JSON.parse(content || '{}');
 };
 http.createServer(async (req, res) => {
@@ -26,6 +27,10 @@ http.createServer(async (req, res) => {
   try {
     // 로컬 개발용 관리자: 다른 사이트의 요청으로 API 키/기사 작업을 실행하지 못하게 합니다.
     if (req.headers.origin && req.headers.origin !== `http://${req.headers.host}`) return json(res, 403, { error: '같은 사이트에서만 요청할 수 있습니다.' });
+    if (req.method === 'POST' && url.pathname === '/api/import/pdf-ocr') {
+      const input = await body(req, 14500000);
+      return json(res, 200, { article: await extractScannedPdf(input.data, input.apiKey) });
+    }
     if (req.method === 'GET' && url.pathname === '/api/articles') {
       const files = (await fs.readdir(dataRoot)).filter(name => name.endsWith('.json'));
       const articles = await Promise.all(files.map(name => load(name.slice(0, -5))));
@@ -33,10 +38,10 @@ http.createServer(async (req, res) => {
     }
     const match = url.pathname.match(/^\/api\/articles\/([a-f0-9-]{36})(?:\/(speech|publish|audio|images|header-[01]))?$/);
     if (req.method === 'POST' && url.pathname === '/api/articles') {
-      const input = await body(req); const source = validateArticle(input);
+      const input = await body(req); const source = validateArticle(input, { allowUntitled: true });
       const speechSettings = validateSpeech(input.speechSettings || DEFAULT_SPEECH);
       const analysis = await analyze(source, input.apiKey);
-      const article = { ...source, ...analysis, id: randomUUID(), status: 'draft', createdAt: new Date().toISOString(), audio: null, headerImages: [], speechSettings };
+      const article = { ...source, ...analysis, title: analysis.suggestedTitle, originalTitle: source.title, id: randomUUID(), status: 'draft', createdAt: new Date().toISOString(), audio: null, headerImages: [], speechSettings };
       await save(article); return json(res, 201, article);
     }
     if (!match) return json(res, 404, { error: '기사를 찾을 수 없습니다.' });
