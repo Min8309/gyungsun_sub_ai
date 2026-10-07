@@ -3,7 +3,8 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import { analyze, generateHeaderImages, providerRequest, validateArticle, validateAnalysis } from './pipeline.mjs';
+import { analyze, generateHeaderImages, validateArticle, validateAnalysis } from './pipeline.mjs';
+import { DEFAULT_SPEECH, validateSpeech, synthesize } from './speech.mjs';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const dataRoot = path.join(root, '.newsroom.local');
 await fs.mkdir(dataRoot, { recursive: true, mode: 0o700 });
@@ -33,8 +34,9 @@ http.createServer(async (req, res) => {
     const match = url.pathname.match(/^\/api\/articles\/([a-f0-9-]{36})(?:\/(speech|publish|audio|images|header-[01]))?$/);
     if (req.method === 'POST' && url.pathname === '/api/articles') {
       const input = await body(req); const source = validateArticle(input);
+      const speechSettings = validateSpeech(input.speechSettings || DEFAULT_SPEECH);
       const analysis = await analyze(source, input.apiKey);
-      const article = { ...source, ...analysis, id: randomUUID(), status: 'draft', createdAt: new Date().toISOString(), audio: null, headerImages: [] };
+      const article = { ...source, ...analysis, id: randomUUID(), status: 'draft', createdAt: new Date().toISOString(), audio: null, headerImages: [], speechSettings };
       await save(article); return json(res, 201, article);
     }
     if (!match) return json(res, 404, { error: '기사를 찾을 수 없습니다.' });
@@ -63,16 +65,16 @@ http.createServer(async (req, res) => {
     }
     if (req.method === 'GET' && !action) return json(res, 200, article);
     if (req.method === 'PUT' && !action) {
-      const input = await body(req); const fields = { ...validateArticle(input), ...validateAnalysis(input) };
+      const input = await body(req); const fields = { ...validateArticle(input), ...validateAnalysis(input), speechSettings: validateSpeech(input.speechSettings || article.speechSettings || DEFAULT_SPEECH) };
       if (article.status === 'published') throw new Error('발행한 기사는 이 버전에서 수정할 수 없습니다.');
-      if (fields.script !== article.script) article.audio = null;
+      if (fields.script !== article.script || JSON.stringify(fields.speechSettings) !== JSON.stringify(article.speechSettings || DEFAULT_SPEECH)) article.audio = null;
       if (['title', 'body', 'summary', 'modernText'].some(key => fields[key] !== article[key]) || JSON.stringify(fields.places) !== JSON.stringify(article.places)) article.headerImages = [];
       Object.assign(article, fields); await save(article); return json(res, 200, article);
     }
     if (req.method === 'POST' && action === 'speech') {
       if (article.status === 'published') throw new Error('발행한 기사입니다.');
       const input = await body(req);
-      const response = await providerRequest('audio/speech', input.apiKey, { model: 'gpt-4o-mini-tts', voice: 'alloy', input: article.script, response_format: 'mp3', instructions: '한국어로 차분하고 명료하게, 경성신문 라디오 진행자처럼 읽으세요.' });
+      const response = await synthesize(article.script, article.speechSettings || DEFAULT_SPEECH, input.apiKey);
       const file = `${id}-${randomUUID()}.mp3`;
       await fs.writeFile(path.join(dataRoot, file), Buffer.from(await response.arrayBuffer()), { mode: 0o600 });
       article.audio = file; await save(article); return json(res, 200, article);

@@ -35,3 +35,21 @@ test('이미지 누락·손상과 두 번째 이미지 실패를 성공으로 �
  for(const data of [{data:[]},{data:[{b64_json:Buffer.from('not-png').toString('base64')}]}])await assert.rejects(generateHeaderImages(imageArticle,'test-key',async()=>({ok:true,json:async()=>data})));
  let calls=0;await assert.rejects(generateHeaderImages(imageArticle,'test-key',async()=>++calls===1?{ok:true,json:async()=>({data:[{b64_json:png.toString('base64')}]})}:{ok:false,status:429}));assert.equal(calls,2);
 });
+
+const { validateSpeech, synthesize, DEFAULT_SPEECH } = await import('./speech.mjs');
+test('보이스 설정에서 허용된 서비스와 ID만 저장하며 키 제외',()=>{
+ assert.deepEqual(validateSpeech({...DEFAULT_SPEECH,apiKey:'private'}),DEFAULT_SPEECH);
+ assert.throws(()=>validateSpeech({...DEFAULT_SPEECH,provider:'unknown'}));assert.throws(()=>validateSpeech({...DEFAULT_SPEECH,voiceId:'../../path'}));
+ assert.throws(()=>validateSpeech({...DEFAULT_SPEECH,provider:'elevenlabs',voiceId:''}));
+});
+test('OpenAI 기존 보이스와 커스텀 ID 및 톤 지시를 그대로 전달',async()=>{
+ for(const id of ['onyx','voice_authorized'])await synthesize('대본',{...DEFAULT_SPEECH,voiceId:id},'test-key',async(url,options)=>{
+  const payload=JSON.parse(options.body);assert.equal(url,'https://api.openai.com/v1/audio/speech');assert.deepEqual(payload.voice,id.startsWith('voice_')?{id}:id);assert.equal(payload.instructions,DEFAULT_SPEECH.instructions);return {ok:true};
+ });
+});
+test('ElevenLabs 보이스 ID와 키는 고정된 공급자 목적지에만 전달',async()=>{
+ await synthesize('대본',{...DEFAULT_SPEECH,provider:'elevenlabs',voiceId:'existingVoice'},'eleven-key',async(url,options)=>{
+  assert.equal(url,'https://api.elevenlabs.io/v1/text-to-speech/existingVoice?output_format=mp3_44100_128');assert.equal(options.headers['xi-api-key'],'eleven-key');assert.equal(JSON.parse(options.body).model_id,'eleven_multilingual_v2');return {ok:true};
+ });
+ await assert.rejects(synthesize('대본',{...DEFAULT_SPEECH,provider:'elevenlabs',voiceId:'existingVoice'},''));
+});
