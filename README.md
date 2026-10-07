@@ -4,6 +4,26 @@
 편집국에서 원문을 입력하면 기사 분석, 카드, 라디오 대본, 헤더 삽화 2장,
 한국어 음성을 생성하고 검토 후 상세페이지로 발행할 수 있습니다.
 
+## 핵심 기술 스택 (Tech Stack)
+
+| 구분 | 기술 / 라이브러리 | 설명 및 용도 |
+| :--- | :--- | :--- |
+| **Frontend** | **React 19** (`react`, `react-dom`) | 최신 React 기반 컴포넌트 아키텍처 및 반응형 UI 구축 |
+| | **Vite 8** | 고속 HMR 개발 환경 및 최적화 번들링 도구 |
+| | **React Router v7** | SPA 라우팅 및 동적 기사/사건 상세 페이지 경로 관리 |
+| | **Vanilla CSS** | 시대극 분위기의 커스텀 디자인 시스템 및 반응형 스타일링 |
+| **Backend / Server** | **Node.js (v20+ / v24 권장)** | ES Modules 기반 네이티브 비동기 런타임 |
+| | **HTTP & Vite Middleware** | SPA와 RESTful 기사 관리 API를 단일 포트(`5174`)에서 통합 서비스 |
+| | **Local JSON Storage** | 기사 데이터 및 미디어 자산을 보관하는 경량 로컬 파일 스토리지 (`.newsroom.local`) |
+| **AI & Automation** | **OpenAI GPT-4o-mini** | 기사 본문 현대어 풀이, 요약, 인물/장소 추출, 라디오 대본 작성 및 맞춤 제목 추천 |
+| | **OpenAI gpt-image-1** | 세피아·목판화 질감의 고해상도 시대극 헤더 삽화 2장 생성 |
+| | **OpenAI TTS (`gpt-4o-mini-tts`)** | 13종 음성 및 커스텀 보이스 기반 맞춤 어조 한국어 오디오 생성 |
+| | **ElevenLabs API** | 고품질 다국어 음성 합성 (`eleven_multilingual_v2`) 지원 |
+| **문서 및 데이터 처리** | **pdfjs-dist** | PDF 원문 텍스트 추출 및 브라우저 기반 문서 파싱 |
+| | **exceljs** | Excel(`.xlsx`) 및 CSV 기사 데이터 일괄 임포트 처리 |
+| **코드 검증 및 테스트** | **Oxlint** | 고성능 Rust 기반 초고속 JavaScript/React 린터 |
+| | **Node Test Runner** | Node.js 내장 테스트 러너(`node --test`)를 통한 파이프라인 검증 |
+
 ## 실행
 
 Node 24 환경에서 다음 명령을 실행합니다.
