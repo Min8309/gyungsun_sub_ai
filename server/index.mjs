@@ -1,0 +1,71 @@
+import http from 'node:http';
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
+import { randomUUID } from 'node:crypto';
+import { fileURLToPath } from 'node:url';
+import { analyze, providerRequest, validateArticle, validateAnalysis } from './pipeline.mjs';
+const root = fileURLToPath(new URL('../', import.meta.url));
+const dataRoot = path.join(root, '.newsroom.local');
+await fs.mkdir(dataRoot, { recursive: true, mode: 0o700 });
+const vite = await (await import('vite')).createServer({ root, server: { middlewareMode: true }, appType: 'spa' });
+const load = async id => JSON.parse(await fs.readFile(path.join(dataRoot, `${id}.json`), 'utf8'));
+const save = async article => {
+  const temp = path.join(dataRoot, `${article.id}.${randomUUID()}.tmp`);
+  await fs.writeFile(temp, JSON.stringify(article), { mode: 0o600 });
+  await fs.rename(temp, path.join(dataRoot, `${article.id}.json`));
+};
+const json = (res, status, value) => { res.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(value)); };
+const body = async req => {
+  let content = ''; for await (const chunk of req) { content += chunk; if (content.length > 150000) throw new Error('입력 데이터가 너무 큽니다.'); }
+  return JSON.parse(content || '{}');
+};
+http.createServer(async (req, res) => {
+  const url = new URL(req.url, 'http://localhost');
+  if (!url.pathname.startsWith('/api/')) return vite.middlewares(req, res);
+  try {
+    // 로컬 개발용 관리자: 다른 사이트의 요청으로 API 키/기사 작업을 실행하지 못하게 합니다.
+    if (req.headers.origin && req.headers.origin !== `http://${req.headers.host}`) return json(res, 403, { error: '같은 사이트에서만 요청할 수 있습니다.' });
+    if (req.method === 'GET' && url.pathname === '/api/articles') {
+      const files = (await fs.readdir(dataRoot)).filter(name => name.endsWith('.json'));
+      const articles = await Promise.all(files.map(name => load(name.slice(0, -5))));
+      return json(res, 200, articles.sort((a,b) => b.createdAt.localeCompare(a.createdAt)));
+    }
+    const match = url.pathname.match(/^\/api\/articles\/([a-f0-9-]{36})(?:\/(speech|publish|audio))?$/);
+    if (req.method === 'POST' && url.pathname === '/api/articles') {
+      const input = await body(req); const source = validateArticle(input);
+      const analysis = await analyze(source, input.apiKey);
+      const article = { ...source, ...analysis, id: randomUUID(), status: 'draft', createdAt: new Date().toISOString(), audio: null };
+      await save(article); return json(res, 201, article);
+    }
+    if (!match) return json(res, 404, { error: '기사를 찾을 수 없습니다.' });
+    const [, id, action] = match; const article = await load(id);
+    if (req.method === 'GET' && action === 'audio') {
+      if (!article.audio) return json(res, 404, { error: '생성된 음성이 없습니다.' });
+      const bytes = await fs.readFile(path.join(dataRoot, article.audio));
+      res.writeHead(200, { 'Content-Type': 'audio/mpeg', 'Cache-Control': 'no-store' }); return res.end(bytes);
+    }
+    if (req.method === 'GET' && !action) return json(res, 200, article);
+    if (req.method === 'PUT' && !action) {
+      const input = await body(req); const fields = { ...validateArticle(input), ...validateAnalysis(input) };
+      if (article.status === 'published') throw new Error('발행한 기사는 이 버전에서 수정할 수 없습니다.');
+      if (fields.script !== article.script) article.audio = null;
+      Object.assign(article, fields); await save(article); return json(res, 200, article);
+    }
+    if (req.method === 'POST' && action === 'speech') {
+      if (article.status === 'published') throw new Error('발행한 기사입니다.');
+      const input = await body(req);
+      const response = await providerRequest('audio/speech', input.apiKey, { model: 'gpt-4o-mini-tts', voice: 'alloy', input: article.script, response_format: 'mp3', instructions: '한국어로 차분하고 명료하게, 경성신문 라디오 진행자처럼 읽으세요.' });
+      const file = `${id}-${randomUUID()}.mp3`;
+      await fs.writeFile(path.join(dataRoot, file), Buffer.from(await response.arrayBuffer()), { mode: 0o600 });
+      article.audio = file; await save(article); return json(res, 200, article);
+    }
+    if (req.method === 'POST' && action === 'publish') {
+      if (!article.audio) throw new Error('음성을 생성한 후 발행해 주세요.');
+      article.status = 'published'; await save(article); return json(res, 200, article);
+    }
+    json(res, 405, { error: '지원하지 않는 요청입니다.' });
+  } catch (error) {
+    const message = error.code === 'ENOENT' ? '기사를 찾을 수 없습니다.' : error instanceof SyntaxError ? '데이터 형식을 확인해 주세요.' : error.name === 'TimeoutError' ? 'AI 요청 시간이 초과되었습니다. 다시 시도해 주세요.' : error.message;
+    json(res, error.code === 'ENOENT' ? 404 : 400, { error: message });
+  }
+}).listen(5174, '127.0.0.1', () => console.log('경성신문 관리자 서버: port 5174 (로컬 개발용)'));

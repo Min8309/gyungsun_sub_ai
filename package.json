@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "newsroom": "node server/index.mjs",
+    "test:newsroom": "node --test server/pipeline.test.mjs",
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview"
