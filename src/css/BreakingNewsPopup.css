@@ -1,0 +1,249 @@
+.breaking-overlay {
+  position: fixed;
+  z-index: 999;
+  inset: 0;
+
+  display: grid;
+  place-items: center;
+
+  padding: 30px;
+
+  background: rgba(5, 4, 3, 0.82);
+  backdrop-filter: blur(4px);
+}
+
+.breaking-popup {
+  position: relative;
+
+  width: min(720px, 94vw);
+  padding: 44px 55px 29px;
+
+  border: 1px solid #3e2919;
+
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(88, 56, 27, 0.025) 0,
+      rgba(88, 56, 27, 0.025) 1px,
+      transparent 1px,
+      transparent 4px
+    ),
+    #e6d1a0;
+
+  box-shadow:
+    0 35px 90px rgba(0, 0, 0, 0.7),
+    inset 0 0 45px rgba(76, 46, 21, 0.11);
+
+  animation:
+    breakingAppear 0.45s ease both,
+    breakingWobble 0.7s 0.45s ease;
+}
+
+@keyframes breakingAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes breakingWobble {
+  0% { transform: rotate(0); }
+  25% { transform: rotate(-0.8deg); }
+  50% { transform: rotate(0.7deg); }
+  75% { transform: rotate(-0.35deg); }
+  100% { transform: rotate(0); }
+}
+
+.breaking-label {
+  position: absolute;
+  top: -27px;
+  left: 26px;
+
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 8px 14px;
+
+  background: #8a2b20;
+  color: #f4e5c0;
+
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.24);
+}
+
+.breaking-label span {
+  font-family: 'Song Myung', serif;
+  font-size: 27px;
+}
+
+.breaking-label strong {
+  font-size: 11px;
+}
+
+.breaking-close {
+  position: absolute;
+  z-index: 5;
+  top: 10px;
+  right: 13px;
+
+  width: 34px;
+  height: 34px;
+
+  border: 0;
+  background: transparent;
+  color: #4d3421;
+
+  font-size: 27px;
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.breaking-card {
+  width: 100%;
+  overflow: hidden;
+
+  border: 1px solid rgba(52, 33, 19, 0.55);
+  background: #c9ad73;
+}
+
+.breaking-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 68vh;
+  object-fit: contain;
+}
+
+.card-arrow {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+
+  display: grid;
+  place-items: center;
+
+  width: 38px;
+  height: 58px;
+
+  border: 1px solid rgba(62, 40, 23, 0.45);
+
+  background: rgba(224, 202, 153, 0.92);
+  color: #3e2919;
+
+  font-size: 29px;
+
+  cursor: pointer;
+
+  transform: translateY(-50%);
+}
+
+.card-arrow-left {
+  left: 8px;
+}
+
+.card-arrow-right {
+  right: 8px;
+}
+
+.breaking-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+
+  margin-top: 17px;
+}
+
+.breaking-pagination button {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+
+  border: 1px solid #684632;
+  border-radius: 50%;
+
+  background: transparent;
+  cursor: pointer;
+}
+
+.breaking-pagination button.active {
+  background: #8b2c21;
+  border-color: #8b2c21;
+}
+
+.breaking-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 15px;
+  padding-top: 12px;
+
+  border-top: 1px solid rgba(53, 34, 20, 0.4);
+
+  color: #5e4934;
+
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+}
+
+/* HERO 우측 다시보기 */
+
+.breaking-reopen-button {
+  position: absolute;
+  z-index: 8;
+  top: 22px;
+  right: 25px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 11px;
+
+  border: 1px solid rgba(247, 228, 189, 0.48);
+
+  background: rgba(14, 10, 7, 0.65);
+  color: #f2dfb7;
+
+  cursor: pointer;
+}
+
+.reopen-hanja {
+  font-family: 'Song Myung', serif;
+  font-size: 18px;
+}
+
+.reopen-text {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 8px;
+}
+
+@media (max-width: 650px) {
+  .breaking-overlay {
+    padding: 15px;
+  }
+
+  .breaking-popup {
+    padding: 37px 34px 23px;
+  }
+
+  .card-arrow {
+    width: 28px;
+    height: 48px;
+  }
+
+  .card-arrow-left {
+    left: 3px;
+  }
+
+  .card-arrow-right {
+    right: 3px;
+  }
+}

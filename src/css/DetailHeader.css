@@ -1,0 +1,155 @@
+.archive-header {
+  position: relative;
+  z-index: 30;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-height: 88px;
+  padding: 12px 38px;
+
+  border-bottom: 1px solid rgba(65, 45, 28, 0.3);
+
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(95, 73, 42, 0.018) 0,
+      rgba(95, 73, 42, 0.018) 1px,
+      transparent 1px,
+      transparent 4px
+    ),
+    #e9d9ad;
+}
+
+.header-center {
+  display: flex;
+  align-items: center;
+  gap: 65px;
+}
+
+.archive-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.archive-logo strong {
+  color: #25190f;
+  font-family: 'Song Myung', serif;
+  font-size: 29px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.08em;
+}
+
+.archive-logo span {
+  margin-top: 5px;
+  color: #7a6248;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+}
+
+.archive-nav {
+  display: flex;
+  align-items: center;
+  gap: 29px;
+}
+
+.archive-nav button {
+  position: relative;
+  padding: 8px 1px;
+
+  border: 0;
+  background: transparent;
+
+  color: #65513b;
+  font-family: 'Noto Serif KR', serif;
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.archive-nav button::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 1px;
+
+  width: 0;
+  height: 1px;
+
+  background: #8c2c21;
+
+  transform: translateX(-50%);
+  transition: width 0.2s ease;
+}
+
+.archive-nav button:hover,
+.archive-nav button.active {
+  color: #8c2c21;
+}
+
+.archive-nav button.active::after {
+  width: 100%;
+}
+
+.header-icons {
+  position: absolute;
+  top: 50%;
+  right: 38px;
+
+  display: flex;
+  align-items: center;
+  gap: 17px;
+
+  color: #493623;
+  transform: translateY(-50%);
+}
+
+.header-icons span {
+  font-size: 19px;
+  cursor: pointer;
+}
+
+@media (max-width: 800px) {
+  .archive-header {
+    min-height: 80px;
+    padding: 12px 15px;
+  }
+
+  .header-center {
+    gap: 25px;
+  }
+
+  .archive-logo strong {
+    font-size: 23px;
+  }
+
+  .archive-nav {
+    gap: 15px;
+  }
+
+  .archive-nav button {
+    font-size: 9px;
+  }
+
+  .header-icons {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .header-center {
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .archive-nav {
+    gap: 12px;
+  }
+}

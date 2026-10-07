@@ -1,0 +1,402 @@
+/* =========================================================
+   BAEKBAEKGYO PLACE ARCHIVE
+========================================================= */
+
+.baekbaek-place-archive {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   PLACE TABS
+========================================================= */
+
+.baekbaek-place-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid rgba(65, 43, 25, 0.55);
+  border-bottom: 1px solid rgba(65, 43, 25, 0.55);
+  margin-bottom: 26px;
+}
+
+.baekbaek-place-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  min-height: 88px;
+  padding: 16px 22px;
+
+  border: 0;
+  border-right: 1px solid rgba(65, 43, 25, 0.25);
+
+  background: transparent;
+  color: #3d2b1f;
+
+  cursor: pointer;
+  text-align: left;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.baekbaek-place-tab:last-child {
+  border-right: 0;
+}
+
+.baekbaek-place-tab > span {
+  font-family: Georgia, serif;
+  font-size: 25px;
+  opacity: 0.55;
+}
+
+.baekbaek-place-tab div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.baekbaek-place-tab small {
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  opacity: 0.6;
+}
+
+.baekbaek-place-tab strong {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.baekbaek-place-tab.active {
+  background: #7f281f;
+  color: #f3e3b4;
+}
+
+.baekbaek-place-tab.active > span {
+  opacity: 1;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.baekbaek-place-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(300px, 0.75fr);
+
+  min-height: 580px;
+
+  border: 1px solid rgba(65, 43, 25, 0.65);
+
+  background: rgba(247, 230, 180, 0.3);
+}
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.baekbaek-place-image-area {
+  position: relative;
+  min-height: 580px;
+  overflow: hidden;
+
+  background: #211a15;
+}
+
+.baekbaek-place-image-area > img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  min-height: 580px;
+  max-height: 680px;
+
+  object-fit: contain;
+
+  background: #211a15;
+}
+
+.baekbaek-place-image-area::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(18, 12, 8, 0.6),
+      transparent 35%
+    );
+}
+
+
+/* =========================================================
+   IMAGE LABEL
+========================================================= */
+
+.baekbaek-place-image-label {
+  position: absolute;
+  z-index: 2;
+
+  left: 28px;
+  bottom: 26px;
+
+  color: #f3e3b4;
+}
+
+.baekbaek-place-image-label span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-size: 10px;
+  letter-spacing: 0.18em;
+}
+
+.baekbaek-place-image-label strong {
+  font-family: Georgia, serif;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.baekbaek-place-number {
+  position: absolute;
+  z-index: 2;
+
+  top: 22px;
+  right: 24px;
+
+  font-family: Georgia, serif;
+  font-size: 48px;
+
+  color: rgba(243, 227, 180, 0.65);
+}
+
+
+/* =========================================================
+   INFO
+========================================================= */
+
+.baekbaek-place-info {
+  padding: 55px 42px;
+
+  color: #3b281c;
+}
+
+.baekbaek-place-eyebrow {
+  display: block;
+
+  margin-bottom: 20px;
+
+  font-size: 10px;
+  letter-spacing: 0.22em;
+
+  color: #872b20;
+}
+
+.baekbaek-place-info h3 {
+  margin: 0 0 22px;
+
+  font-family: Georgia, serif;
+  font-size: 38px;
+  font-weight: 500;
+}
+
+.baekbaek-place-old-name {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.baekbaek-place-old-name span {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  opacity: 0.55;
+}
+
+.baekbaek-place-old-name strong {
+  font-size: 19px;
+  font-weight: 500;
+}
+
+.baekbaek-place-rule {
+  width: 100%;
+  height: 1px;
+
+  margin: 30px 0;
+
+  background: rgba(65, 43, 25, 0.35);
+}
+
+.baekbaek-place-subtitle {
+  display: block;
+
+  margin-bottom: 15px;
+
+  font-size: 17px;
+}
+
+.baekbaek-place-description {
+  margin: 0;
+
+  font-size: 14px;
+  line-height: 1.9;
+
+  word-break: keep-all;
+}
+
+.baekbaek-current-record {
+  margin-top: 34px;
+  padding-top: 22px;
+
+  border-top: 1px solid rgba(65, 43, 25, 0.22);
+}
+
+.baekbaek-current-record span {
+  display: block;
+
+  margin-bottom: 10px;
+
+  font-size: 9px;
+  letter-spacing: 0.17em;
+
+  color: #872b20;
+}
+
+.baekbaek-current-record p {
+  margin: 0;
+
+  font-size: 12px;
+  line-height: 1.75;
+}
+
+
+/* =========================================================
+   PHOTO SELECTOR
+========================================================= */
+
+.baekbaek-photo-selector {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 30px;
+
+  padding: 24px 0;
+
+  border-bottom: 1px solid rgba(65, 43, 25, 0.35);
+}
+
+.baekbaek-photo-selector > span {
+  padding-top: 8px;
+
+  font-size: 9px;
+  letter-spacing: 0.18em;
+}
+
+.baekbaek-photo-selector > div {
+  display: flex;
+  gap: 12px;
+}
+
+.baekbaek-photo-selector button {
+  width: 115px;
+  padding: 5px;
+
+  border: 1px solid rgba(65, 43, 25, 0.35);
+
+  background: transparent;
+
+  cursor: pointer;
+
+  opacity: 0.55;
+
+  transition:
+    opacity 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.baekbaek-photo-selector button.active {
+  opacity: 1;
+  border-color: #872b20;
+}
+
+.baekbaek-photo-selector button img {
+  display: block;
+
+  width: 100%;
+  height: 65px;
+
+  object-fit: cover;
+}
+
+.baekbaek-photo-selector button span {
+  display: block;
+
+  padding: 7px 0 3px;
+
+  font-size: 9px;
+  letter-spacing: 0.08em;
+
+  color: #3b281c;
+}
+
+
+/* =========================================================
+   SOURCE
+========================================================= */
+
+.baekbaek-place-source {
+  margin: 18px 0 0;
+
+  font-size: 10px;
+  line-height: 1.7;
+
+  color: rgba(59, 40, 28, 0.62);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 850px) {
+
+  .baekbaek-place-tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .baekbaek-place-tab {
+    border-right: 0;
+    border-bottom: 1px solid rgba(65, 43, 25, 0.2);
+  }
+
+  .baekbaek-place-main {
+    grid-template-columns: 1fr;
+  }
+
+  .baekbaek-place-image-area,
+  .baekbaek-place-image-area > img {
+    min-height: 420px;
+  }
+
+  .baekbaek-place-info {
+    padding: 35px 28px;
+  }
+
+  .baekbaek-photo-selector {
+    flex-direction: column;
+  }
+
+}

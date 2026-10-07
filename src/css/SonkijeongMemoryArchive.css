@@ -1,0 +1,743 @@
+/* =========================================================
+   SONKIJEONG MEMORY ARCHIVE
+========================================================= */
+
+.son-memory-section {
+  position: relative;
+
+  width: 100%;
+
+  padding:
+    110px
+    7vw
+    100px;
+
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(
+      rgba(221, 199, 145, 0.12),
+      rgba(221, 199, 145, 0.12)
+    ),
+    #ead8a9;
+
+  color: #24180f;
+}
+
+
+/* =========================================================
+   HEADING
+========================================================= */
+
+.son-memory-heading {
+  width: min(
+    1180px,
+    100%
+  );
+
+  margin:
+    0 auto
+    55px;
+
+  text-align: center;
+}
+
+
+.son-memory-eyebrow {
+  display: inline-block;
+
+  margin-bottom: 18px;
+
+  color: #8d281f;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: 0.25em;
+}
+
+
+.son-memory-heading h2 {
+  margin: 0;
+
+  font-family:
+    "Noto Serif KR",
+    serif;
+
+  font-size:
+    clamp(
+      34px,
+      4vw,
+      58px
+    );
+
+  font-weight: 500;
+
+  line-height: 1.25;
+
+  letter-spacing: -0.04em;
+}
+
+
+.son-memory-heading h2 em {
+  color: #8d281f;
+
+  font-style: normal;
+}
+
+
+.son-memory-heading p {
+  margin:
+    22px 0
+    0;
+
+  color: rgba(
+    36,
+    24,
+    15,
+    0.65
+  );
+
+  font-size: 14px;
+
+  line-height: 1.8;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.son-memory-main {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.45fr)
+    minmax(300px, 0.75fr);
+
+  width: min(
+    1180px,
+    100%
+  );
+
+  margin: 0 auto;
+
+  border:
+    1px solid
+    rgba(
+      66,
+      43,
+      24,
+      0.55
+    );
+
+  background: #e5cd91;
+
+  box-shadow:
+    0 20px 45px
+    rgba(
+      50,
+      31,
+      14,
+      0.12
+    );
+}
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.son-memory-image-area {
+  position: relative;
+
+  min-height: 570px;
+
+  padding: 35px;
+
+  box-sizing: border-box;
+
+  border-right:
+    1px solid
+    rgba(
+      66,
+      43,
+      24,
+      0.45
+    );
+
+  background: #d4b976;
+}
+
+
+.son-memory-image-frame {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 500px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(
+      52,
+      34,
+      19,
+      0.55
+    );
+
+  background: #1b1712;
+}
+
+
+.son-memory-image-frame img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+
+/* =========================================================
+   NUMBER
+========================================================= */
+
+.son-memory-image-number {
+  position: absolute;
+
+  left: 50px;
+  bottom: 50px;
+
+  display: flex;
+
+  align-items: baseline;
+
+  gap: 9px;
+
+  padding:
+    8px
+    12px;
+
+  background:
+    rgba(
+      25,
+      18,
+      12,
+      0.86
+    );
+
+  color: #f0dfb3;
+}
+
+
+.son-memory-image-number span {
+  font-size: 9px;
+
+  letter-spacing: 0.18em;
+}
+
+
+.son-memory-image-number strong {
+  font-family:
+    "Noto Serif KR",
+    serif;
+
+  font-size: 21px;
+}
+
+
+/* =========================================================
+   ARROWS
+========================================================= */
+
+.son-memory-arrow {
+  position: absolute;
+
+  top: 50%;
+
+  z-index: 5;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 45px;
+  height: 58px;
+
+  border:
+    1px solid
+    rgba(
+      239,
+      218,
+      168,
+      0.65
+    );
+
+  background:
+    rgba(
+      28,
+      20,
+      13,
+      0.8
+    );
+
+  color: #f2dfae;
+
+  font-family: serif;
+
+  font-size: 30px;
+
+  cursor: pointer;
+
+  transform:
+    translateY(-50%);
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+
+.son-memory-arrow:hover {
+  background: #8d281f;
+
+  color: #fff2ce;
+}
+
+
+.son-memory-prev {
+  left: 47px;
+}
+
+
+.son-memory-next {
+  right: 47px;
+}
+
+
+/* =========================================================
+   INFORMATION
+========================================================= */
+
+.son-memory-info {
+  position: relative;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  min-height: 570px;
+
+  padding:
+    55px
+    45px;
+
+  box-sizing: border-box;
+}
+
+
+.son-memory-record-label {
+  color: #8d281f;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 0.18em;
+}
+
+
+.son-memory-rule {
+  width: 42px;
+  height: 2px;
+
+  margin:
+    20px 0
+    30px;
+
+  background: #8d281f;
+}
+
+
+.son-memory-small {
+  margin-bottom: 13px;
+
+  color: rgba(
+    36,
+    24,
+    15,
+    0.55
+  );
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.2em;
+}
+
+
+.son-memory-info h3 {
+  margin:
+    0 0
+    25px;
+
+  font-family:
+    "Noto Serif KR",
+    serif;
+
+  font-size: 31px;
+
+  font-weight: 600;
+
+  line-height: 1.45;
+
+  word-break: keep-all;
+}
+
+
+.son-memory-info p {
+  margin: 0;
+
+  color: rgba(
+    36,
+    24,
+    15,
+    0.72
+  );
+
+  font-size: 14px;
+
+  line-height: 2;
+
+  word-break: keep-all;
+}
+
+
+/* =========================================================
+   COUNTER
+========================================================= */
+
+.son-memory-counter {
+  display: flex;
+
+  align-items: baseline;
+
+  gap: 8px;
+
+  margin-top: 50px;
+
+  color: rgba(
+    36,
+    24,
+    15,
+    0.55
+  );
+}
+
+
+.son-memory-counter strong {
+  color: #8d281f;
+
+  font-family:
+    "Noto Serif KR",
+    serif;
+
+  font-size: 30px;
+}
+
+
+.son-memory-counter span {
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   THUMBNAILS
+========================================================= */
+
+.son-memory-thumbnails {
+  display: grid;
+
+  grid-template-columns:
+    repeat(5, 1fr);
+
+  gap: 12px;
+
+  width: min(
+    1180px,
+    100%
+  );
+
+  margin:
+    20px auto
+    0;
+}
+
+
+.son-memory-thumb {
+  position: relative;
+
+  padding:
+    8px
+    8px
+    12px;
+
+  border:
+    1px solid
+    rgba(
+      64,
+      42,
+      24,
+      0.35
+    );
+
+  background:
+    rgba(
+      229,
+      205,
+      145,
+      0.7
+    );
+
+  color: #38271a;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+
+.son-memory-thumb:hover {
+  transform:
+    translateY(-3px);
+}
+
+
+.son-memory-thumb.active {
+  border-color: #8d281f;
+
+  background: #dfc27c;
+}
+
+
+.son-memory-thumb-image {
+  width: 100%;
+  height: 105px;
+
+  overflow: hidden;
+
+  margin-bottom: 9px;
+
+  background: #1c1813;
+}
+
+
+.son-memory-thumb-image img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+
+.son-memory-thumb span {
+  display: block;
+
+  text-align: left;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.15em;
+}
+
+
+.son-memory-thumb.active span {
+  color: #8d281f;
+}
+
+
+/* =========================================================
+   SOURCE
+========================================================= */
+
+.son-memory-source {
+  width: min(
+    1180px,
+    100%
+  );
+
+  margin:
+    22px auto
+    0;
+
+  color: rgba(
+    36,
+    24,
+    15,
+    0.45
+  );
+
+  font-size: 10px;
+
+  line-height: 1.8;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (
+  max-width: 900px
+) {
+
+  .son-memory-section {
+    padding:
+      80px
+      25px;
+  }
+
+
+  .son-memory-main {
+    grid-template-columns: 1fr;
+  }
+
+
+  .son-memory-image-area {
+    min-height: auto;
+
+    border-right: 0;
+
+    border-bottom:
+      1px solid
+      rgba(
+        66,
+        43,
+        24,
+        0.45
+      );
+  }
+
+
+  .son-memory-image-frame {
+    height: 430px;
+  }
+
+
+  .son-memory-info {
+    min-height: auto;
+
+    padding:
+      45px
+      35px;
+  }
+
+
+  .son-memory-thumbnails {
+    grid-template-columns:
+      repeat(5, minmax(110px, 1fr));
+
+    overflow-x: auto;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 600px
+) {
+
+  .son-memory-section {
+    padding:
+      65px
+      15px;
+  }
+
+
+  .son-memory-heading {
+    margin-bottom: 35px;
+  }
+
+
+  .son-memory-heading h2 {
+    font-size: 34px;
+  }
+
+
+  .son-memory-image-area {
+    padding: 15px;
+  }
+
+
+  .son-memory-image-frame {
+    height: 330px;
+  }
+
+
+  .son-memory-prev {
+    left: 25px;
+  }
+
+
+  .son-memory-next {
+    right: 25px;
+  }
+
+
+  .son-memory-arrow {
+    width: 38px;
+    height: 48px;
+
+    font-size: 25px;
+  }
+
+
+  .son-memory-image-number {
+    left: 28px;
+    bottom: 28px;
+  }
+
+
+  .son-memory-info {
+    padding:
+      35px
+      25px;
+  }
+
+
+  .son-memory-info h3 {
+    font-size: 25px;
+  }
+
+
+  .son-memory-thumbnails {
+    grid-template-columns:
+      repeat(5, 105px);
+  }
+
+
+  .son-memory-thumb-image {
+    height: 80px;
+  }
+
+}

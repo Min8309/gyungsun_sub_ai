@@ -1,0 +1,1168 @@
+/* =========================================================
+   ARCHIVE RADIO
+   時代의 周波數
+========================================================= */
+
+.archive-radio {
+  width: min(960px, calc(100% - 40px));
+
+  margin: 85px auto 0;
+
+  color: #2d2016;
+
+  font-family: "Noto Serif KR", serif;
+}
+
+/* =========================================================
+   SECTION TITLE
+========================================================= */
+
+.radio-section-heading {
+  margin-bottom: 28px;
+
+  text-align: center;
+}
+
+.radio-section-heading > span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #8f2c24;
+
+  font-family: "Noto Sans KR", sans-serif;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 0.25em;
+}
+
+.radio-section-heading h2 {
+  margin: 0;
+
+  color: #2b1c13;
+
+  font-family: "Song Myung", serif;
+
+  font-size: 38px;
+  font-weight: 400;
+
+  letter-spacing: 0.05em;
+}
+
+.radio-section-heading p {
+  margin: 10px 0 0;
+
+  color: #766047;
+
+  font-family: "Noto Serif KR", serif;
+
+  font-size: 14px;
+
+  line-height: 1.7;
+}
+
+/* =========================================================
+   RADIO MACHINE
+========================================================= */
+
+.radio-machine {
+  display: grid;
+
+  grid-template-columns:
+    minmax(300px, 0.88fr)
+    minmax(0, 1.35fr);
+
+  overflow: hidden;
+
+  min-height: 465px;
+
+  border: 7px solid #4b301e;
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #4a301f,
+      #765237 50%,
+      #4d321f
+    );
+
+  box-shadow:
+    0 18px 35px rgba(47, 30, 17, 0.24),
+    inset 0 0 0 2px rgba(224, 188, 125, 0.15);
+}
+
+/* =========================================================
+   LEFT
+========================================================= */
+
+.radio-visual {
+  display: flex;
+  flex-direction: column;
+
+  padding: 28px 24px 20px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(25, 16, 11, 0.22),
+      transparent
+    );
+}
+
+/* =========================================================
+   ARCH WINDOW
+========================================================= */
+
+.radio-visual-window {
+  position: relative;
+
+  flex: 1;
+
+  min-height: 335px;
+
+  overflow: hidden;
+
+  border: 5px solid #2f2118;
+
+  border-radius:
+    150px 150px 12px 12px;
+
+  background: #18130f;
+
+  box-shadow:
+    inset 0 0 30px rgba(0, 0, 0, 0.72),
+    0 3px 9px rgba(0, 0, 0, 0.3);
+}
+
+/* =========================================================
+   CASE IMAGE
+========================================================= */
+
+.radio-case-image {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  opacity: 1;
+
+  filter:
+    sepia(0.15)
+    saturate(0.82)
+    contrast(1.04);
+
+  transform: scale(1);
+
+  transition:
+    opacity 0.4s ease,
+    filter 0.4s ease,
+    transform 0.5s ease;
+}
+
+/* 튜닝 중 사진 흐려짐 */
+
+.radio-machine.is-tuning
+.radio-case-image {
+  opacity: 0.22;
+
+  filter:
+    grayscale(0.85)
+    contrast(1.4)
+    brightness(0.55);
+
+  transform: scale(1.025);
+}
+
+/* =========================================================
+   STATIC VISUAL
+========================================================= */
+
+.radio-static-overlay {
+  position: absolute;
+  z-index: 4;
+
+  inset: 0;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 2px,
+      rgba(245, 231, 194, 0.16) 3px,
+      transparent 4px
+    );
+
+  transition: opacity 0.2s ease;
+}
+
+.radio-machine.is-tuning
+.radio-static-overlay {
+  opacity: 0.8;
+
+  animation:
+    radioStaticMove 0.12s
+    steps(2)
+    infinite;
+}
+
+@keyframes radioStaticMove {
+  0% {
+    transform: translateY(-3px);
+  }
+
+  50% {
+    transform: translateY(3px);
+  }
+
+  100% {
+    transform: translateY(-1px);
+  }
+}
+
+/* =========================================================
+   VIGNETTE
+========================================================= */
+
+.radio-image-vignette {
+  position: absolute;
+  z-index: 5;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at center,
+      transparent 45%,
+      rgba(18, 12, 8, 0.68) 100%
+    );
+}
+
+/* =========================================================
+   CHANNEL BADGE
+========================================================= */
+
+.radio-image-channel {
+  position: absolute;
+  z-index: 7;
+
+  left: 16px;
+  bottom: 14px;
+
+  padding: 6px 9px;
+
+  border: 1px solid
+    rgba(237, 212, 164, 0.4);
+
+  background:
+    rgba(27, 19, 14, 0.74);
+
+  color: #e9d4a5;
+
+  font-family:
+    "Noto Sans KR",
+    sans-serif;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.15em;
+}
+
+/* =========================================================
+   SPEAKER
+========================================================= */
+
+.radio-speaker-lines {
+  display: flex;
+  justify-content: center;
+
+  gap: 9px;
+
+  margin-top: 16px;
+}
+
+.radio-speaker-lines i {
+  display: block;
+
+  width: 38px;
+  height: 4px;
+
+  border-radius: 20px;
+
+  background:
+    rgba(37, 23, 15, 0.58);
+
+  box-shadow:
+    inset 0 1px 1px
+    rgba(0, 0, 0, 0.55);
+}
+
+/* =========================================================
+   RIGHT CONTROL
+========================================================= */
+
+.radio-control {
+  display: flex;
+  flex-direction: column;
+
+  padding: 27px 31px 25px;
+
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(90, 64, 39, 0.018) 0,
+      rgba(90, 64, 39, 0.018) 1px,
+      transparent 1px,
+      transparent 4px
+    ),
+    #d4be86;
+}
+
+/* =========================================================
+   TOP
+========================================================= */
+
+.radio-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  padding-bottom: 15px;
+
+  border-bottom:
+    1px solid
+    rgba(66, 44, 26, 0.3);
+}
+
+.radio-brand span {
+  display: block;
+
+  color: #39271a;
+
+  font-family: "Song Myung", serif;
+
+  font-size: 19px;
+}
+
+.radio-brand small {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #846a49;
+
+  font-family:
+    "Noto Sans KR",
+    sans-serif;
+
+  font-size: 7px;
+  font-weight: 700;
+
+  letter-spacing: 0.16em;
+}
+
+/* =========================================================
+   ON AIR
+========================================================= */
+
+.on-air {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 7px 10px;
+
+  border:
+    1px solid
+    rgba(72, 48, 28, 0.28);
+
+  background:
+    rgba(83, 61, 38, 0.08);
+
+  color: #7a664d;
+
+  font-family:
+    "Noto Sans KR",
+    sans-serif;
+
+  font-size: 8px;
+  font-weight: 700;
+
+  letter-spacing: 0.14em;
+}
+
+.on-air i {
+  display: block;
+
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #625c50;
+
+  box-shadow:
+    inset 0 0 2px
+    rgba(0, 0, 0, 0.55);
+
+  transition:
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+/* 오디오 재생 시 빨간불 */
+
+.on-air.active {
+  color: #8c1e18;
+
+  border-color:
+    rgba(129, 34, 27, 0.42);
+
+  background:
+    rgba(139, 34, 27, 0.07);
+}
+
+.on-air.active i {
+  background: #d52a20;
+
+  box-shadow:
+    0 0 5px
+    rgba(220, 38, 28, 0.9),
+    0 0 12px
+    rgba(220, 38, 28, 0.55);
+
+  animation:
+    onAirBlink 1.2s
+    ease-in-out
+    infinite;
+}
+
+@keyframes onAirBlink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.55;
+  }
+}
+
+/* =========================================================
+   CURRENT CASE
+========================================================= */
+
+.radio-current-case {
+  padding: 20px 0 18px;
+}
+
+.radio-current-year {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #8d2922;
+
+  font-family:
+    "Noto Sans KR",
+    sans-serif;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+}
+
+.radio-current-case h3 {
+  min-height: 58px;
+
+  margin: 0;
+
+  color: #2e1e14;
+
+  font-family: "Song Myung", serif;
+
+  font-size: 24px;
+  font-weight: 400;
+
+  line-height: 1.4;
+
+  word-break: keep-all;
+}
+
+/* 튜닝 중 */
+
+.radio-machine.is-tuning
+.radio-current-case h3 {
+  color: #6d5941;
+}
+
+/* =========================================================
+   FREQUENCY PANEL
+========================================================= */
+
+.frequency-panel {
+  padding:
+    13px 15px 11px;
+
+  border:
+    1px solid
+    rgba(66, 44, 26, 0.38);
+
+  background:
+    rgba(58, 42, 27, 0.09);
+
+  box-shadow:
+    inset 0 2px 6px
+    rgba(65, 44, 26, 0.08);
+}
+
+/* =========================================================
+   CHANNEL LABELS
+========================================================= */
+
+.frequency-label-row {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  margin-bottom: 10px;
+}
+
+.frequency-label-row button {
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #766044;
+
+  cursor: pointer;
+
+  text-align: center;
+}
+
+.frequency-label-row strong {
+  display: block;
+
+  font-family:
+    "Noto Sans KR",
+    sans-serif;
+
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.frequency-label-row span {
+  display: block;
+
+  margin-top: 2px;
+
+  font-family:
+    "Noto Serif KR",
+    serif;
+
+  font-size: 8px;
+}
+
+.frequency-label-row
+button.active {
+  color: #8e241d;
+}
+
+/* =========================================================
+   FREQUENCY TRACK
+========================================================= */
+
+.frequency-track {
+  position: relative;
+
+  height: 31px;
+}
+
+.frequency-line {
+  position: absolute;
+
+  top: 14px;
+  left: 8%;
+  right: 8%;
+
+  height: 2px;
+
+  background:
+    rgba(66, 44, 26, 0.55);
+}
+
+.frequency-station {
+  position: absolute;
+
+  top: 9px;
+
+  width: 2px;
+  height: 12px;
+
+  transform:
+    translateX(-50%);
+
+  background: #503622;
+}
+
+/* =========================================================
+   MOVING RED POINTER
+========================================================= */
+
+.frequency-pointer {
+  position: absolute;
+  z-index: 5;
+
+  top: 2px;
+
+  width: 18px;
+  height: 27px;
+
+  transform:
+    translateX(-50%);
+
+  transition:
+    left 1.05s
+    cubic-bezier(
+      0.32,
+      0.72,
+      0.22,
+      1
+    );
+}
+
+.frequency-pointer i {
+  position: absolute;
+
+  top: 0;
+  left: 50%;
+
+  width: 2px;
+  height: 20px;
+
+  transform:
+    translateX(-50%);
+
+  background: #9e261f;
+}
+
+.frequency-pointer span {
+  position: absolute;
+
+  left: 50%;
+  bottom: 0;
+
+  width: 10px;
+  height: 10px;
+
+  transform:
+    translateX(-50%);
+
+  border: 2px solid #e2b97a;
+  border-radius: 50%;
+
+  background: #c32e25;
+
+  box-shadow:
+    0 0 7px
+    rgba(177, 36, 28, 0.55);
+}
+
+/* 튜닝 중 빨간 점 */
+
+.frequency-pointer.tuning span {
+  animation:
+    tuningPointerPulse
+    0.35s ease
+    infinite alternate;
+}
+
+@keyframes tuningPointerPulse {
+  from {
+    box-shadow:
+      0 0 3px
+      rgba(177, 36, 28, 0.45);
+  }
+
+  to {
+    box-shadow:
+      0 0 13px
+      rgba(177, 36, 28, 0.9);
+  }
+}
+
+/* =========================================================
+   FREQUENCY STATUS
+========================================================= */
+
+.frequency-status {
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: 3px;
+
+  color: #7b6345;
+
+  font-family:
+    "Noto Sans KR",
+    sans-serif;
+
+  font-size: 7px;
+
+  letter-spacing: 0.12em;
+}
+
+.frequency-status strong {
+  color: #593e29;
+
+  font-weight: 700;
+}
+
+/* =========================================================
+   BOTTOM CONTROL
+========================================================= */
+
+.radio-bottom-controls {
+  display: grid;
+
+  grid-template-columns:
+    1fr 90px;
+
+  align-items: center;
+
+  gap: 18px;
+
+  margin-top: 17px;
+}
+
+/* =========================================================
+   PLAYER
+========================================================= */
+
+.radio-player-row {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.radio-play-button {
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  padding: 0;
+
+  border:
+    1px solid #543923;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      #806044,
+      #3c291c
+    );
+
+  color: #f0dba8;
+
+  font-size: 13px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 3px 7px
+    rgba(50, 32, 18, 0.22);
+}
+
+.radio-play-button:disabled {
+  cursor: default;
+
+  opacity: 0.45;
+}
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.radio-progress-area {
+  flex: 1;
+}
+
+.radio-progress {
+  width: 100%;
+  height: 4px;
+
+  cursor: pointer;
+
+  accent-color: #842a22;
+}
+
+.radio-time {
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: 3px;
+
+  color: #776047;
+
+  font-family:
+    "Noto Sans KR",
+    sans-serif;
+
+  font-size: 7px;
+}
+
+/* =========================================================
+   DIAL AREA
+========================================================= */
+
+.radio-dial-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 4px;
+}
+
+.dial-title {
+  color: #60472f;
+
+  font-family:
+    "Noto Sans KR",
+    sans-serif;
+
+  font-size: 7px;
+  font-weight: 700;
+
+  letter-spacing: 0.18em;
+}
+
+/* =========================================================
+   DIAL
+========================================================= */
+
+.radio-dial {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 64px;
+  height: 64px;
+
+  padding: 0;
+
+  border:
+    3px solid #38261a;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      #9a7654,
+      #5a3c27 58%,
+      #352318 100%
+    );
+
+  cursor: grab;
+
+  touch-action: none;
+
+  box-shadow:
+    0 4px 8px
+    rgba(43, 28, 17, 0.3),
+    inset 0 0 0 3px
+    rgba(225, 194, 135, 0.08);
+}
+
+.radio-dial.dragging {
+  cursor: grabbing;
+}
+
+.radio-dial-inner {
+  position: absolute;
+
+  inset: 0;
+
+  transition:
+    transform 0.5s
+    cubic-bezier(
+      0.34,
+      1.56,
+      0.64,
+      1
+    );
+}
+
+.radio-dial.dragging
+.radio-dial-inner {
+  transition: none;
+}
+
+/* 다이얼 표시선 */
+
+.radio-dial-inner i {
+  position: absolute;
+
+  top: 7px;
+  left: 50%;
+
+  width: 3px;
+  height: 14px;
+
+  transform:
+    translateX(-50%);
+
+  border-radius: 4px;
+
+  background: #e7c782;
+
+  box-shadow:
+    0 0 3px
+    rgba(255, 226, 159, 0.4);
+}
+
+.radio-dial-area small {
+  color: #8a7051;
+
+  font-family:
+    "Noto Sans KR",
+    sans-serif;
+
+  font-size: 6px;
+  font-weight: 700;
+
+  letter-spacing: 0.14em;
+}
+
+/* =========================================================
+   MORE BUTTON
+========================================================= */
+
+.radio-more-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+
+  margin-top: 15px;
+
+  padding: 10px 0;
+
+  border: 0;
+  border-top:
+    1px solid
+    rgba(70, 47, 29, 0.25);
+  border-bottom:
+    1px solid
+    rgba(70, 47, 29, 0.25);
+
+  background: transparent;
+
+  color: #4d3724;
+
+  cursor: pointer;
+}
+
+.radio-more-button span {
+  font-family:
+    "Noto Serif KR",
+    serif;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.radio-more-button strong {
+  color: #902b23;
+
+  font-family:
+    "Noto Sans KR",
+    sans-serif;
+
+  font-size: 16px;
+}
+
+/* =========================================================
+   MORE CONTENT
+========================================================= */
+
+.radio-more-content {
+  max-height: 0;
+
+  overflow: hidden;
+
+  opacity: 0;
+
+  transition:
+    max-height 0.35s ease,
+    opacity 0.25s ease,
+    padding 0.35s ease;
+}
+
+.radio-more-content.open {
+  max-height: 150px;
+
+  padding-top: 12px;
+
+  opacity: 1;
+}
+
+.radio-more-content p {
+  margin: 0;
+
+  color: #5c452f;
+
+  font-family:
+    "Noto Serif KR",
+    serif;
+
+  font-size: 11px;
+
+  line-height: 1.75;
+
+  word-break: keep-all;
+}
+
+/* =========================================================
+   NOTICE
+========================================================= */
+
+.radio-notice {
+  margin: 11px 0 0;
+
+  color: #887255;
+
+  font-family:
+    "Noto Serif KR",
+    serif;
+
+  font-size: 9px;
+
+  text-align: center;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 850px) {
+  .archive-radio {
+    width:
+      min(
+        700px,
+        calc(100% - 30px)
+      );
+  }
+
+  .radio-machine {
+    grid-template-columns: 1fr;
+  }
+
+  .radio-visual {
+    padding: 25px;
+  }
+
+  .radio-visual-window {
+    min-height: 390px;
+
+    border-radius:
+      190px 190px 10px 10px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+  .archive-radio {
+    width: 100%;
+
+    margin-top: 65px;
+  }
+
+  .radio-section-heading h2 {
+    font-size: 31px;
+  }
+
+  .radio-section-heading p {
+    padding: 0 20px;
+
+    font-size: 12px;
+  }
+
+  .radio-machine {
+    border-width: 5px;
+    border-radius: 8px;
+  }
+
+  .radio-visual {
+    padding: 18px;
+  }
+
+  .radio-visual-window {
+    min-height: 330px;
+  }
+
+  .radio-control {
+    padding: 22px 19px;
+  }
+
+  .radio-current-case h3 {
+    font-size: 21px;
+  }
+
+  .frequency-label-row strong {
+    font-size: 7px;
+  }
+
+  .frequency-label-row span {
+    font-size: 6px;
+  }
+
+  .radio-bottom-controls {
+    grid-template-columns:
+      1fr 75px;
+
+    gap: 10px;
+  }
+
+  .radio-dial {
+    width: 56px;
+    height: 56px;
+  }
+
+  .radio-more-content p {
+    font-size: 10px;
+  }
+}

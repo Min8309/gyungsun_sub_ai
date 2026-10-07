@@ -1,0 +1,240 @@
+.hero-slider {
+  position: relative;
+  width: 100%;
+  height: 430px;
+  overflow: hidden;
+  background: #17110c;
+}
+
+.hero-images {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  opacity: 0;
+  transform: scale(1.02);
+
+  transition:
+    opacity 1.2s ease,
+    transform 5s ease;
+}
+
+.hero-slide.active {
+  opacity: 1;
+  transform: scale(1.06);
+}
+
+.hero-overlay {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(7, 5, 3, 0.86) 0%,
+      rgba(7, 5, 3, 0.65) 30%,
+      rgba(7, 5, 3, 0.29) 57%,
+      rgba(7, 5, 3, 0.13) 100%
+    ),
+    linear-gradient(
+      0deg,
+      rgba(7, 5, 3, 0.36),
+      transparent 50%
+    );
+}
+
+.hero-content {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  left: 8%;
+
+  color: #f4e8c9;
+
+  transform: translateY(-50%);
+}
+
+.hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 17px;
+
+  color: rgba(246, 233, 202, 0.83);
+
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+
+.hero-meta span {
+  opacity: 0.5;
+}
+
+.hero-content h1 {
+  margin: 0;
+
+  color: #fff8e6;
+
+  font-family: 'Song Myung', serif;
+  font-size: clamp(43px, 4.2vw, 64px);
+  font-weight: 400;
+  line-height: 1.16;
+  letter-spacing: -0.02em;
+
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.55);
+}
+
+.hero-content p {
+  margin: 18px 0 0;
+
+  color: rgba(247, 232, 198, 0.88);
+
+  font-size: 13px;
+  letter-spacing: 0.05em;
+}
+
+/* 이전 / 다음 사건 */
+
+.page-case-arrow {
+  position: fixed;
+  z-index: 80;
+  top: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 43px;
+  height: 43px;
+
+  border: 1px solid rgba(229, 210, 168, 0.35);
+  border-radius: 50%;
+
+  background: rgba(12, 9, 6, 0.82);
+  color: #ead9ad;
+
+  font-size: 18px;
+
+  cursor: pointer;
+
+  transform: translateY(-50%);
+  transition: 0.2s ease;
+}
+
+.page-case-arrow-left {
+  left: max(8px, calc((100vw - 1500px) / 2 - 52px));
+}
+
+.page-case-arrow-right {
+  right: max(8px, calc((100vw - 1500px) / 2 - 52px));
+}
+
+.page-case-arrow:hover {
+  border-color: #ead9ad;
+  background: #22170f;
+}
+
+.arrow-tooltip {
+  position: absolute;
+  top: 50%;
+
+  width: max-content;
+  padding: 6px 8px;
+
+  border: 1px solid rgba(235, 216, 176, 0.25);
+
+  background: rgba(10, 8, 6, 0.9);
+  color: #ead9ad;
+
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 9px;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transform: translateY(-50%);
+  transition: opacity 0.2s ease;
+}
+
+.page-case-arrow-left .arrow-tooltip {
+  left: 50px;
+}
+
+.page-case-arrow-right .arrow-tooltip {
+  right: 50px;
+}
+
+.page-case-arrow:hover .arrow-tooltip {
+  opacity: 1;
+}
+
+/* BGM */
+
+.bgm-toggle {
+  position: fixed;
+  z-index: 90;
+
+  right: max(10px, calc((100vw - 1500px) / 2 - 55px));
+  bottom: 25px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  min-height: 39px;
+  padding: 0 13px;
+
+  border: 1px solid rgba(229, 210, 168, 0.35);
+
+  background: rgba(13, 10, 7, 0.88);
+  color: #d9c79f;
+
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 9px;
+
+  cursor: pointer;
+}
+
+.bgm-toggle.playing {
+  color: #f0dcae;
+}
+
+.bgm-icon {
+  font-size: 15px;
+}
+
+@media (max-width: 800px) {
+  .hero-slider {
+    height: 360px;
+  }
+
+  .hero-content {
+    left: 7%;
+    right: 7%;
+  }
+
+  .hero-content h1 {
+    font-size: 39px;
+  }
+
+  .page-case-arrow {
+    display: none;
+  }
+
+  .bgm-toggle {
+    right: 12px;
+    bottom: 12px;
+  }
+}
